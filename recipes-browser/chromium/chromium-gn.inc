@@ -262,8 +262,8 @@ def get_compiler_flag(params, param_name, d):
     return ''
 
 ARM_FLOAT_ABI = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'hard', 'softfp', d)}"
-ARM_FPU = "${@get_compiler_flag(d.getVar('TUNE_CCARGS').split(), '-mfpu', d)}"
-ARM_TUNE = "${@get_compiler_flag(d.getVar('TUNE_CCARGS').split(), '-mcpu', d)}"
+ARM_FPU = "${@get_compiler_flag(d.getVar('TUNE_CCARGS', True).split(), '-mfpu', d)}"
+ARM_TUNE = "${@get_compiler_flag(d.getVar('TUNE_CCARGS', True).split(), '-mcpu', d)}"
 ARM_VERSION_aarch64 = "8"
 ARM_VERSION_armv7a = "7"
 ARM_VERSION_armv7ve = "7"
