@@ -11,8 +11,7 @@ REQUIRED_DISTRO_FEATURES = "wayland"
 DEPENDS += "\
         libxkbcommon \
         virtual/egl \
-        wayland \
-        wayland-native \
+        wayland-egl \
 "
 
 # Chromium can use v4l2 device for hardware accelerated video decoding. Make sure that

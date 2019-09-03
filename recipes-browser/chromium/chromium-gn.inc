@@ -2,7 +2,7 @@ require chromium.inc
 require chromium-unbundle.inc
 require gn-utils.inc
 
-inherit distro_features_check gtk-icon-cache qemu
+inherit distro_features_check qemu
 
 # The actual directory name in out/ is irrelevant for GN.
 OUTPUT_DIR = "out/Release"
@@ -306,7 +306,7 @@ python do_check_fdlimit_for_linking () {
     import resource
     nofile_limit = resource.getrlimit(resource.RLIMIT_NOFILE)
     if nofile_limit[0] < 4096:
-        bb.fatal('The current maximum number of open file descriptors '
+        bb.warn('The current maximum number of open file descriptors '
                  'is too low (%d), and causes ld.bfd to fail to link '
                  'Chromium. Please use ulimit -n to increase it to a higher '
                  'value, such as 4096, or switch to gold or lld.' % nofile_limit[0])
