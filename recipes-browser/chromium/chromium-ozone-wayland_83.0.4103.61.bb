@@ -5,8 +5,7 @@ REQUIRED_DISTRO_FEATURES = "wayland"
 DEPENDS += "\
         libxkbcommon \
         virtual/egl \
-        wayland \
-        wayland-native \
+        wayland-egl \
 "
 
 GN_ARGS += "\
