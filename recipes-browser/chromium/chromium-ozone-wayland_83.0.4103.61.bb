@@ -18,8 +18,8 @@ GN_ARGS += "\
         system_wayland_scanner_path="${STAGING_BINDIR_NATIVE}/wayland-scanner" \
         use_xkbcommon=true \
         use_system_libwayland=true \
-        use_system_minigbm=true \
-        use_system_libdrm=true \
+        use_system_minigbm=false \
+        use_system_libdrm=false \
         use_gtk=false \
 "
 
