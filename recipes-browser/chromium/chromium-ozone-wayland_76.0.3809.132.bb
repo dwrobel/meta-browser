@@ -7,6 +7,7 @@ SRC_URI += " \
         file://0002-wayland-disable-gbm.patch \
         file://0003-wayland-disable-dri.patch \
         file://0005-ptrace-glibc-2.24.patch \
+        file://0006-do-not-link-atomic.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
