@@ -5,6 +5,7 @@ SRC_URI += " \
         file://V4L2/0001-Add-support-for-V4L2VDA-on-Linux.patch \
         file://V4L2/0002-Add-mmap-via-libv4l-to-generic_v4l2_device.patch \
         file://0002-wayland-disable-gbm.patch \
+        file://0003-wayland-disable-dri.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
@@ -29,8 +30,8 @@ GN_ARGS += "\
         system_wayland_scanner_path="${STAGING_BINDIR_NATIVE}/wayland-scanner" \
         use_xkbcommon=true \
         use_system_libwayland=true \
-        use_system_minigbm=true \
-        use_system_libdrm=true \
+        use_system_minigbm=false \
+        use_system_libdrm=false \
 "
 
 # The chromium binary must always be started with those arguments.
