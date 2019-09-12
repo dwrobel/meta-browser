@@ -1,0 +1,32 @@
+Fix PTRACE_ related compilation error on glibc-2.24
+
+Fixes:
+ | ../../sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc:416:9: error: use of undeclared identifier 'PTRACE_GET_THREAD_AREA'
+ |         PTRACE_GET_THREAD_AREA,
+ |         ^
+ | ../../sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc:124:15: note: expanded from macro 'CASES'
+ | #define CASES SANDBOX_BPF_DSL_CASES
+ |               ^
+ | ../../sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc:419:9: error: use of undeclared identifier 'PTRACE_GETVFPREGS'
+ |         PTRACE_GETVFPREGS,
+ |         ^
+ | ../../sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc:124:15: note: expanded from macro 'CASES'
+ |  #define CASES SANDBOX_BPF_DSL_CASES
+ |                ^
+ | 2 errors generated. 
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc
++++ chromium-76.0.3809.132/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc
+@@ -35,6 +35,7 @@
+ #if !defined(OS_NACL_NONSFI)
+ #include <sys/ioctl.h>
+ #include <sys/ptrace.h>
++#include <asm/ptrace.h>
+ #if defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(__arm__) && \
+     !defined(__aarch64__) && !defined(PTRACE_GET_THREAD_AREA)
+ // Also include asm/ptrace-abi.h since ptrace.h in older libc (for instance
