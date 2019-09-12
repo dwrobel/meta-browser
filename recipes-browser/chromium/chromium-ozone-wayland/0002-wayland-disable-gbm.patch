@@ -1,0 +1,36 @@
+Index: chromium-76.0.3809.132/ui/ozone/platform/wayland/wayland.gni
+===================================================================
+--- chromium-76.0.3809.132.orig/ui/ozone/platform/wayland/wayland.gni
++++ chromium-76.0.3809.132/ui/ozone/platform/wayland/wayland.gni
+@@ -8,5 +8,5 @@ import("//ui/ozone/ozone.gni")
+ declare_args() {
+   # Checks if Wayland must be compiled with dmabuf/gbm feature, which allows a
+   # multi-process hardware accelerated mode.
+-  use_wayland_gbm = true
++  use_wayland_gbm = false
+
+Index: chromium-76.0.3809.132/ui/ozone/BUILD.gn
+===================================================================
+--- chromium-76.0.3809.132.orig/ui/ozone/BUILD.gn
++++ chromium-76.0.3809.132/ui/ozone/BUILD.gn
+@@ -50,7 +50,6 @@ if (ozone_platform_cast) {
+ if (ozone_platform_wayland) {
+   ozone_platforms += [ "wayland" ]
+   ozone_platform_deps += [ "platform/wayland" ]
+-  ozone_platform_test_deps += [ "platform/wayland:wayland_unittests" ]
+ }
+ 
+ if (ozone_platform_x11) {
+Index: chromium-76.0.3809.132/ui/ozone/platform/wayland/BUILD.gn
+===================================================================
+--- chromium-76.0.3809.132.orig/ui/ozone/platform/wayland/BUILD.gn
++++ chromium-76.0.3809.132/ui/ozone/platform/wayland/BUILD.gn
+@@ -233,8 +233,6 @@ source_set("test_support") {
+ source_set("wayland_unittests") {
+   testonly = true
+ 
+-  assert(use_wayland_gbm)
+-
+   sources = [
+     "gpu/wayland_surface_factory_unittest.cc",
+     "host/wayland_buffer_manager_host_unittest.cc",
