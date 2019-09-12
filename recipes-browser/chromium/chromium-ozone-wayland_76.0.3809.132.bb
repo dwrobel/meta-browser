@@ -6,6 +6,7 @@ SRC_URI += " \
         file://V4L2/0002-Add-mmap-via-libv4l-to-generic_v4l2_device.patch \
         file://0002-wayland-disable-gbm.patch \
         file://0003-wayland-disable-dri.patch \
+        file://0004-wayland-disable--is-desktop-linux.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"

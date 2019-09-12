@@ -1,0 +1,25 @@
+So far an embedded platform is far from being a traditional desktop unix,
+so diable it by default.
+
+Fixes:
+
+| ERROR Unresolved dependencies.
+| //content/gpu:gpu_sources(//build/toolchain/yocto:yocto_target)
+|   needs //build/config/linux/dri:dri(//build/toolchain/yocto:yocto_target)
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/build/config/BUILDCONFIG.gn
+===================================================================
+--- chromium-76.0.3809.132.orig/build/config/BUILDCONFIG.gn
++++ chromium-76.0.3809.132/build/config/BUILDCONFIG.gn
+@@ -131,7 +131,7 @@ declare_args() {
+   is_official_build = false
+ 
+   # Whether we're a traditional desktop unix.
+-  is_desktop_linux = current_os == "linux"
++  is_desktop_linux = false
+ 
+   # Set to true when compiling with the Clang compiler.
+   is_clang = current_os != "linux" ||

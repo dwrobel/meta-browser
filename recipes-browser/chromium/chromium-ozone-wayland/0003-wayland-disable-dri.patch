@@ -1,3 +1,8 @@
+Disables dri for embedded platform.
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
 Index: chromium-76.0.3809.132/build/config/linux/dri/BUILD.gn
 ===================================================================
 --- chromium-76.0.3809.132.orig/build/config/linux/dri/BUILD.gn

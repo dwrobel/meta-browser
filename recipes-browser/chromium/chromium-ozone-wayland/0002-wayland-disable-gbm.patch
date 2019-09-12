@@ -1,3 +1,8 @@
+Disables usage of libgbm, as we don't have it on embedded platform.
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
 Index: chromium-76.0.3809.132/ui/ozone/platform/wayland/wayland.gni
 ===================================================================
 --- chromium-76.0.3809.132.orig/ui/ozone/platform/wayland/wayland.gni
