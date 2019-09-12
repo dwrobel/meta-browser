@@ -31,6 +31,7 @@ SRC_URI += " \
         file://0001-IWYU-uint32_t-is-defined-in-cstdint.patch \
         file://0002-wayland-disable-gbm.patch \
         file://0003-wayland-disable-dri.patch \
+        file://0005-ptrace-glibc-2.24.patch \
 "
 
 SRC_URI_append_libc-musl = "\
