@@ -1,0 +1,41 @@
+Do not link atomic library
+
+Fixes:
+ python "../../build/toolchain/gcc_link_wrapper.py" --output="yocto_native/brotli" -- clang++ -Wl,--fatal-warnings -Wl,--build-id=sha1 -fPIC -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,-z,defs -Wl,--as-needed -fuse-ld=gold -B -m64 -Wl,-
+ O2 -Wl,--gc-sections -pie -Wl,--disable-new-dtags -L/data/dwrobel1/onemw/onemw/oe-builds/chromium-3/onemw/build-brcm97449svms-refboard/tmp/sysroots/x86_64-linux/usr/lib -L/data/dwrobel1/onemw/onemw/oe-builds/chromium-3/onemw/build-brcm974
+ 49svms-refboard/tmp/sysroots/x86_64-linux/lib -Wl,-rpath-link,/data/dwrobel1/onemw/onemw/oe-builds/chromium-3/onemw/build-brcm97449svms-refboard/tmp/sysroots/x86_64-linux/usr/lib -Wl,-rpath-link,/data/dwrobel1/onemw/onemw/oe-builds/chromi
+ um-3/onemw/build-brcm97449svms-refboard/tmp/sysroots/x86_64-linux/lib -Wl,-rpath,/data/dwrobel1/onemw/onemw/oe-builds/chromium-3/onemw/build-brcm97449svms-refboard/tmp/sysroots/x86_64-linux/usr/lib -Wl,-rpath,/data/dwrobel1/onemw/onemw/oe
+ -builds/chromium-3/onemw/build-brcm97449svms-refboard/tmp/sysroots/x86_64-linux/lib -Wl,-O1 -o "yocto_native/brotli" -Wl,--start-group @"yocto_native/brotli.rsp"  -Wl,--end-group   -latomic -ldl -lpthread -lrt 
+ /opt/rh/devtoolset-6/root/usr/lib/gcc/x86_64-redhat-linux/6.3.1/../../../../bin/ld.gold: error: cannot find -latomic
+ clang-9: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/build/config/linux/BUILD.gn
+===================================================================
+--- chromium-76.0.3809.132.orig/build/config/linux/BUILD.gn
++++ chromium-76.0.3809.132/build/config/linux/BUILD.gn
+@@ -29,7 +29,7 @@ config("runtime_library") {
+ 
+   if ((!is_chromeos || default_toolchain != "//build/toolchain/cros:target") &&
+       (!use_custom_libcxx || current_cpu == "mipsel")) {
+-    libs = [ "atomic" ]
++#    libs = [ "atomic" ]
+   }
+ }
+ 
+Index: chromium-76.0.3809.132/base/BUILD.gn
+===================================================================
+--- chromium-76.0.3809.132.orig/base/BUILD.gn
++++ chromium-76.0.3809.132/base/BUILD.gn
+@@ -1260,7 +1260,7 @@ jumbo_component("base") {
+   # more robust check for this.
+   if (!use_sysroot && (is_android || (is_linux && !is_chromecast)) &&
+       host_toolchain != "//build/toolchain/cros:host") {
+-    libs += [ "atomic" ]
++#    libs += [ "atomic" ]
+   }
+ 
+   if (use_allocator_shim) {
