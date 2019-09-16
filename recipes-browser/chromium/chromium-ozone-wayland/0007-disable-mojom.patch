@@ -1,0 +1,100 @@
+Disables mojom provider on non linux desktop platform
+
+Fixes the following errors:
+./../chrome/app/chrome_content_browser_overlay_manifest.cc:244:24: error: no member named 'DiscardsDetailsProvider' in namespace 'mojom'
+                mojom::DiscardsDetailsProvider,
+                                ~~~~~~~^
+                                1 error generated.
+
+
+../../chrome/browser/ui/webui/discards/discards_ui.h:12:10: fatal error: 'chrome/browser/ui/webui/discards/discards.mojom.h' file not found
+#include "chrome/browser/ui/webui/discards/discards.mojom.h"
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         1 error generated.
+
+
+../../chrome/browser/ui/webui/discards/discards_ui.h:28:14: error: no type named 'DiscardsDetailsProviderRequest' in namespace 'mojom'
+      mojom::DiscardsDetailsProviderRequest request);
+      ~~~~~~~^
+../../chrome/browser/ui/webui/discards/discards_ui.h:32:26: error: no member named 'DiscardsDetailsProvider' in namespace 'mojom'
+  std::unique_ptr<mojom::DiscardsDetailsProvider> ui_handler_;
+                  ~~~~~~~^
+../../chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc:254:10: error: cannot initialize return object of type 'content::WebUIController *' with an rvalue of type 'DiscardsUI *'
+  return new T(web_ui);
+         ^~~~~~~~~~~~~
+         3 errors generated.
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/app/chrome_content_browser_overlay_manifest.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/app/chrome_content_browser_overlay_manifest.cc
++++ chromium-76.0.3809.132/chrome/app/chrome_content_browser_overlay_manifest.cc
+@@ -82,7 +82,6 @@
+ #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+     defined(OS_CHROMEOS)
+ #include "chrome/browser/performance_manager/webui_graph_dump.mojom.h"  // nogncheck
+-#include "chrome/browser/ui/webui/discards/discards.mojom.h"
+ #endif
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+@@ -242,7 +241,6 @@ const service_manager::Manifest& GetChro
+ #endif
+ #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || \
+     defined(OS_CHROMEOS)
+-                mojom::DiscardsDetailsProvider,
+                 performance_manager::mojom::WebUIGraphDump,
+ #endif
+ #if defined(OS_CHROMEOS)
+Index: chromium-76.0.3809.132/chrome/browser/ui/webui/discards/discards_ui.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/ui/webui/discards/discards_ui.cc
++++ chromium-76.0.3809.132/chrome/browser/ui/webui/discards/discards_ui.cc
+@@ -433,8 +433,6 @@ DiscardsUI::DiscardsUI(content::WebUI* w
+   content::WebUIDataSource::Add(profile, source.release());
+ 
+   AddHandlerToRegistry(base::BindRepeating(
+-      &DiscardsUI::BindDiscardsDetailsProvider, base::Unretained(this)));
+-  AddHandlerToRegistry(base::BindRepeating(
+       &DiscardsUI::BindWebUIGraphDumpProvider, base::Unretained(this)));
+ 
+   data_store_inspector_ = resource_coordinator::
+@@ -443,12 +441,6 @@ DiscardsUI::DiscardsUI(content::WebUI* w
+ 
+ DiscardsUI::~DiscardsUI() {}
+ 
+-void DiscardsUI::BindDiscardsDetailsProvider(
+-    mojom::DiscardsDetailsProviderRequest request) {
+-  ui_handler_ = std::make_unique<DiscardsDetailsProviderImpl>(
+-      data_store_inspector_, std::move(request));
+-}
+-
+ void DiscardsUI::BindWebUIGraphDumpProvider(
+     performance_manager::mojom::WebUIGraphDumpRequest request) {
+   performance_manager::PerformanceManager* performance_manager =
+Index: chromium-76.0.3809.132/chrome/browser/ui/webui/discards/discards_ui.h
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/ui/webui/discards/discards_ui.h
++++ chromium-76.0.3809.132/chrome/browser/ui/webui/discards/discards_ui.h
+@@ -9,7 +9,6 @@
+ 
+ #include "base/macros.h"
+ #include "chrome/browser/performance_manager/webui_graph_dump.mojom.h"
+-#include "chrome/browser/ui/webui/discards/discards.mojom.h"
+ #include "ui/webui/mojo_web_ui_controller.h"
+ 
+ namespace resource_coordinator {
+@@ -24,12 +23,9 @@ class DiscardsUI : public ui::MojoWebUIC
+   ~DiscardsUI() override;
+ 
+  private:
+-  void BindDiscardsDetailsProvider(
+-      mojom::DiscardsDetailsProviderRequest request);
+   void BindWebUIGraphDumpProvider(
+       performance_manager::mojom::WebUIGraphDumpRequest request);
+ 
+-  std::unique_ptr<mojom::DiscardsDetailsProvider> ui_handler_;
+   resource_coordinator::LocalSiteCharacteristicsDataStoreInspector*
+       data_store_inspector_;
+ 

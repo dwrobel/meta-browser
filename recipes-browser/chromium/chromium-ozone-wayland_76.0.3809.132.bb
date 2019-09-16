@@ -9,6 +9,7 @@ SRC_URI += " \
         file://0004-wayland-disable--is-desktop-linux.patch \
         file://0005-ptrace-glibc-2.24.patch \
         file://0006-do-not-link-atomic.patch \
+        file://0007-disable-mojom.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
