@@ -1,0 +1,42 @@
+Do not initialize plugins on non linux desktop platform
+
+Fixes:
+../../chrome/browser/plugins/plugin_finder.cc:173:11: error: use of undeclared identifier 'IDR_PLUGIN_DB_JSON'
+          IDR_PLUGIN_DB_JSON));
+                    ^
+                    1 error generated.
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/browser/plugins/plugin_finder.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/plugins/plugin_finder.cc
++++ chromium-76.0.3809.132/chrome/browser/plugins/plugin_finder.cc
+@@ -153,6 +153,7 @@ PluginFinder::PluginFinder() : version_(
+ 
+ void PluginFinder::Init() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++#if 0 // {
+   // Load the built-in plugin list first. If we have a newer version stored
+   // locally or download one, we will replace this one with it.
+   std::unique_ptr<base::DictionaryValue> plugin_list(LoadBuiltInPluginList());
+@@ -164,8 +165,10 @@ void PluginFinder::Init() {
+     return;
+ 
+   ReinitializePlugins(plugin_list.get());
++#endif // }
+ }
+ 
++#if 0 // {
+ // static
+ std::unique_ptr<base::DictionaryValue> PluginFinder::LoadBuiltInPluginList() {
+   base::StringPiece json_resource(
+@@ -225,6 +228,7 @@ std::unique_ptr<base::DictionaryValue> P
+   RecordBuiltInPluginListError(PluginListError::PLUGIN_LIST_NO_ERROR);
+   return base::DictionaryValue::From(std::move(value));
+ }
++#endif // }
+ 
+ PluginFinder::~PluginFinder() {
+ }
