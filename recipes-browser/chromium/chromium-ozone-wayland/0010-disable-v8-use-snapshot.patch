@@ -1,0 +1,27 @@
+Disable v8_use_snapshot
+
+Fixes:
+
+[3/568] python ../../build/gn_run_binary.py ./v8-qemu-wrapper.sh ./v8_context_snapshot_generator --output_file=v8_context_snapshot.bin
+FAILED: v8_context_snapshot.bin 
+python ../../build/gn_run_binary.py ./v8-qemu-wrapper.sh ./v8_context_snapshot_generator --output_file=v8_context_snapshot.bin
+./v8_context_snapshot_generator: symbol lookup error: /usr/lib/libwayland-egl.so.1: undefined symbol: NXPL_RegisterNexusDisplayPlatform
+./v8-qemu-wrapper.sh failed with exit code 127
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/v8/gni/v8.gni
+===================================================================
+--- chromium-76.0.3809.132.orig/v8/gni/v8.gni
++++ chromium-76.0.3809.132/v8/gni/v8.gni
+@@ -41,8 +41,7 @@ declare_args() {
+   # https://803591
+   # On Mac hosts, 32-bit builds targeting Windows can't use snapshots, see
+   # https://crbug.com/794838
+-  v8_use_snapshot = !(is_win && host_os != "win" && target_cpu == "x64") &&
+-                    !(is_win && host_os == "mac" && target_cpu == "x86")
++  v8_use_snapshot = false
+ 
+   # Enable several snapshots side-by-side (e.g. default and for trusted code).
+   v8_use_multi_snapshots = false
