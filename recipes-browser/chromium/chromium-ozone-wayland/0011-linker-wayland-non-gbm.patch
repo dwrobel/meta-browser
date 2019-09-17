@@ -1,0 +1,68 @@
+Fix undefined reference to OnSubmission and OnPresentation
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/ui/ozone/platform/wayland/gpu/wayland_buffer_manager_gpu.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/ui/ozone/platform/wayland/gpu/wayland_buffer_manager_gpu.cc
++++ chromium-76.0.3809.132/ui/ozone/platform/wayland/gpu/wayland_buffer_manager_gpu.cc
+@@ -17,7 +17,10 @@
+ namespace ui {
+ 
+ WaylandBufferManagerGpu::WaylandBufferManagerGpu(WaylandSurfaceFactory* factory)
+-    : factory_(factory),
++    :
++#if defined(WAYLAND_GBM)
++      factory_(factory),
++#endif
+       associated_binding_(this),
+       gpu_thread_runner_(base::ThreadTaskRunnerHandle::Get()) {}
+ 
+@@ -43,12 +46,14 @@ void WaylandBufferManagerGpu::OnSubmissi
+                                            gfx::SwapResult swap_result) {
+   DCHECK(gpu_thread_runner_->BelongsToCurrentThread());
+   DCHECK_NE(widget, gfx::kNullAcceleratedWidget);
++#if defined(WAYLAND_GBM)
+   auto* surface = factory_->GetSurface(widget);
+   // There can be a race between destruction and submitting the last frames. The
+   // surface can be destroyed by the time the host receives a request to destroy
+   // a buffer, and is able to call the OnSubmission for that specific buffer.
+   if (surface)
+     surface->OnSubmission(buffer_id, swap_result);
++#endif
+ }
+ 
+ void WaylandBufferManagerGpu::OnPresentation(
+@@ -57,12 +62,14 @@ void WaylandBufferManagerGpu::OnPresenta
+     const gfx::PresentationFeedback& feedback) {
+   DCHECK(gpu_thread_runner_->BelongsToCurrentThread());
+   DCHECK_NE(widget, gfx::kNullAcceleratedWidget);
++#if defined(WAYLAND_GBM)
+   auto* surface = factory_->GetSurface(widget);
+   // There can be a race between destruction and presenting the last frames. The
+   // surface can be destroyed by the time the host receives a request to destroy
+   // a buffer, and is able to call the OnPresentation for that specific buffer.
+   if (surface)
+     surface->OnPresentation(buffer_id, feedback);
++#endif
+ }
+ 
+ void WaylandBufferManagerGpu::CreateDmabufBasedBuffer(
+Index: chromium-76.0.3809.132/ui/ozone/platform/wayland/gpu/wayland_buffer_manager_gpu.h
+===================================================================
+--- chromium-76.0.3809.132.orig/ui/ozone/platform/wayland/gpu/wayland_buffer_manager_gpu.h
++++ chromium-76.0.3809.132/ui/ozone/platform/wayland/gpu/wayland_buffer_manager_gpu.h
+@@ -133,11 +133,11 @@ class WaylandBufferManagerGpu : public o
+ 
+   void BindHostInterface();
+ 
++#if defined(WAYLAND_GBM)
+   // Non-owned. Only used to get registered surfaces and notify them about
+   // submission and presentation of buffers.
+   WaylandSurfaceFactory* const factory_;
+ 
+-#if defined(WAYLAND_GBM)
+   // A DRM render node based gbm device.
+   std::unique_ptr<GbmDevice> gbm_device_;
+ #endif
