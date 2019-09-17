@@ -143,7 +143,10 @@ GN_ARGS += "is_debug=false is_official_build=true"
 # Starting with M61, Chromium defaults to building with its own copy of libc++
 # instead of the system's libstdc++. Explicitly disable this behavior.
 # https://groups.google.com/a/chromium.org/d/msg/chromium-packagers/8aYO3me2SCE/SZ8pJXhZAwAJ
-GN_ARGS += "use_custom_libcxx=false"
+# (dw) Use default behavior as the system libstdc++ (version 6.4 on morty)
+# is no longer oficially suported by chromium and generates compilation errors
+# which we are not going to fix.
+GN_ARGS += "use_custom_libcxx=true"
 
 # When using meta-clang, one can switch to using the lld linker
 # by using the ld-is-lld distro feature.
