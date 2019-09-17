@@ -13,6 +13,7 @@ SRC_URI += " \
         file://0008-remove-plugin-finder.patch \
         file://0009-enable-generating-ids-webauth.patch \
         file://0010-disable-v8-use-snapshot.patch \
+        file://0011-linker-wayland-non-gbm.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
