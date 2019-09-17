@@ -11,6 +11,7 @@ SRC_URI += " \
         file://0006-do-not-link-atomic.patch \
         file://0007-disable-mojom.patch \
         file://0008-remove-plugin-finder.patch \
+        file://0009-enable-generating-ids-webauth.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"

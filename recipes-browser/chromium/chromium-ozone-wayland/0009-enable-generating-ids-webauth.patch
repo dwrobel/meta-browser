@@ -1,0 +1,54 @@
+Enable generating IDS_WEBAUTHN_* resource defines
+
+Some of resources are generated only if 'is_linux_desktop' is defined
+however, the usage of them is not guarded with the same set of ifdefs.
+
+Fixes:
+../../chrome/browser/ui/webauthn/transport_utils.cc:19:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_BLE'
+      return IDS_WEBAUTHN_TRANSPORT_BLE;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:21:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_NFC'
+      return IDS_WEBAUTHN_TRANSPORT_NFC;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:23:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_USB'
+      return IDS_WEBAUTHN_TRANSPORT_USB;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:25:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_INTERNAL'
+      return IDS_WEBAUTHN_TRANSPORT_INTERNAL;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:27:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_CABLE'
+      return IDS_WEBAUTHN_TRANSPORT_CABLE;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:37:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_POPUP_BLE'
+      return IDS_WEBAUTHN_TRANSPORT_POPUP_BLE;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:39:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_POPUP_NFC'
+      return IDS_WEBAUTHN_TRANSPORT_POPUP_NFC;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:41:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_POPUP_USB'
+      return IDS_WEBAUTHN_TRANSPORT_POPUP_USB;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:43:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_POPUP_INTERNAL'
+      return IDS_WEBAUTHN_TRANSPORT_POPUP_INTERNAL;
+             ^
+../../chrome/browser/ui/webauthn/transport_utils.cc:45:14: error: use of undeclared identifier 'IDS_WEBAUTHN_TRANSPORT_POPUP_CABLE'
+      return IDS_WEBAUTHN_TRANSPORT_POPUP_CABLE;
+             ^
+10 errors generated.
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/app/generated_resources.grd
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/app/generated_resources.grd
++++ chromium-76.0.3809.132/chrome/app/generated_resources.grd
+@@ -9495,7 +9495,7 @@ Please help our engineers fix this probl
+     </if>
+ 
+     <!-- Web-modal dialog shown during Web Authenticaton API requests. -->
+-    <if expr="is_win or is_macosx or desktop_linux or chromeos">
++    <if expr="is_win or is_macosx or is_linux or chromeos">
+       <message name="IDS_WEBAUTHN_GENERIC_TITLE" desc="Title of most dialogs shown while the user is authenticating on a web site using a security key.">
+         Use your security key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>
+       </message>
