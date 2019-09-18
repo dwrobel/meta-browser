@@ -1,0 +1,21 @@
+Fix undefined reference to TtsPlatformImpl::GetInstance()
+
+Fixes:
+obj/content/browser/browser/tts_platform_impl.o:tts_platform_impl.cc:function content::TtsPlatform::GetInstance(): error: undefined reference to 'content::TtsPlatformImpl::GetInstance()'
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/content/browser/speech/tts_platform_impl.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/content/browser/speech/tts_platform_impl.cc
++++ chromium-76.0.3809.132/content/browser/speech/tts_platform_impl.cc
+@@ -23,7 +23,7 @@ TtsPlatform* TtsPlatform::GetInstance()
+   // There is no platform TTS definition for Fuchsia.
+   return nullptr;
+ #else
+-  return TtsPlatformImpl::GetInstance();
++  return nullptr;
+ #endif
+ }
+ 
