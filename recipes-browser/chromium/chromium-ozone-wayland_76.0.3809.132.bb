@@ -18,6 +18,7 @@ SRC_URI += " \
         file://0013-linker-browser-switcher-prefs.patch \
         file://0014-linker-shortcut-manager.patch \
         file://0015-linker-tts-platform-impl.patch \
+        file://0016-linker-icon-loader.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
