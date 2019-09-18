@@ -1,0 +1,26 @@
+Fix undefined reference to DeleteAllShortcutsForProfile
+
+Fixes:
+obj/chrome/browser/apps/platform_apps/platform_apps/shortcut_manager.o:shortcut_manager.cc:function AppShortcutManager::OnProfileWillBeRemoved(base::FilePath const&): error: undefined reference to 'web_app::internals::DeleteAllShortcutsForProfile(base::FilePath const&)'
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/browser/apps/platform_apps/shortcut_manager.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/apps/platform_apps/shortcut_manager.cc
++++ chromium-76.0.3809.132/chrome/browser/apps/platform_apps/shortcut_manager.cc
+@@ -138,11 +138,12 @@ void AppShortcutManager::OnProfileWillBe
+     const base::FilePath& profile_path) {
+   if (profile_path != profile_->GetPath())
+     return;
+-
++#if 0
+   web_app::internals::GetShortcutIOTaskRunner()->PostTask(
+       FROM_HERE,
+       base::BindOnce(&web_app::internals::DeleteAllShortcutsForProfile,
+                      profile_path));
++#endif
+ }
+ 
+ void AppShortcutManager::UpdateShortcutsForAllAppsNow() {

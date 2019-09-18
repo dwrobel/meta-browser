@@ -16,6 +16,7 @@ SRC_URI += " \
         file://0011-linker-wayland-non-gbm.patch \
         file://0012-linker-createhatbubble.patch \
         file://0013-linker-browser-switcher-prefs.patch \
+        file://0014-linker-shortcut-manager.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
