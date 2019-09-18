@@ -1,0 +1,30 @@
+Fix undefined reference to CreateHatsBubble
+
+Fixes:
+ obj/chrome/browser/ui/libui.a(obj/chrome/browser/ui/ui/browser_view.o):browser_view.cc:function BrowserView::ShowHatsBubbleFromAppMenuButton(): error: undefined reference to 'HatsBubbleView::CreateHatsBubble(AppMenuButton*, Browser*, aura
+::Window*)'
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/browser/ui/views/frame/browser_view.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/ui/views/frame/browser_view.cc
++++ chromium-76.0.3809.132/chrome/browser/ui/views/frame/browser_view.cc
+@@ -2974,7 +2974,7 @@ void BrowserView::ShowHatsBubbleFromAppM
+   // Never show any HaTS bubble in Incognito.
+   if (!IsRegularOrGuestSession())
+     return;
+-
++#if 0
+   AppMenuButton* app_menu_button =
+       toolbar_button_provider()->GetAppMenuButton();
+ 
+@@ -2989,6 +2989,7 @@ void BrowserView::ShowHatsBubbleFromAppM
+ 
+   bubble->SetHighlightedButton(app_menu_button);
+   bubble->GetWidget()->Show();
++#endif
+ }
+ #endif
+ 
