@@ -15,6 +15,7 @@ SRC_URI += " \
         file://0010-disable-v8-use-snapshot.patch \
         file://0011-linker-wayland-non-gbm.patch \
         file://0012-linker-createhatbubble.patch \
+        file://0013-linker-browser-switcher-prefs.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"

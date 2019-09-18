@@ -1,0 +1,66 @@
+Fix undefined references to browser_switcher::prefs
+
+Fixes:
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kAlternativeBrowserPath'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kAlternativeBrowserParameters'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kUrlList'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kUrlGreylist'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kExternalSitelistUrl'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kExternalGreylistUrl'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kEnabled'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kKeepLastTab'
+obj/chrome/browser/libbrowser.a(obj/chrome/browser/browser/configuration_policy_handler_list_factory.o):configuration_policy_handler_list_factory.cc:policy::(anonymous namespace)::kSimplePolicyMap: error: undefined reference to 'browser_s
+witcher::prefs::kDelay'
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/browser/policy/configuration_policy_handler_list_factory.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/policy/configuration_policy_handler_list_factory.cc
++++ chromium-76.0.3809.132/chrome/browser/policy/configuration_policy_handler_list_factory.cc
+@@ -1020,36 +1020,6 @@ const PolicyToPreferenceMapEntry kSimple
+     prefs::kAllowPopupsDuringPageUnload,
+     base::Value::Type::BOOLEAN },
+ 
+-#if defined(OS_WIN) || defined(OS_MACOSX) || \
+-    (defined(OS_LINUX) && !defined(OS_CHROMEOS))
+-  { key::kAlternativeBrowserPath,
+-    browser_switcher::prefs::kAlternativeBrowserPath,
+-    base::Value::Type::STRING },
+-  { key::kAlternativeBrowserParameters,
+-    browser_switcher::prefs::kAlternativeBrowserParameters,
+-    base::Value::Type::LIST },
+-  { key::kBrowserSwitcherUrlList,
+-    browser_switcher::prefs::kUrlList,
+-    base::Value::Type::LIST },
+-  { key::kBrowserSwitcherUrlGreylist,
+-    browser_switcher::prefs::kUrlGreylist,
+-    base::Value::Type::LIST },
+-  { key::kBrowserSwitcherExternalSitelistUrl,
+-    browser_switcher::prefs::kExternalSitelistUrl,
+-    base::Value::Type::STRING },
+-  { key::kBrowserSwitcherExternalGreylistUrl,
+-    browser_switcher::prefs::kExternalGreylistUrl,
+-    base::Value::Type::STRING },
+-  { key::kBrowserSwitcherEnabled,
+-    browser_switcher::prefs::kEnabled,
+-    base::Value::Type::BOOLEAN },
+-  { key::kBrowserSwitcherKeepLastChromeTab,
+-    browser_switcher::prefs::kKeepLastTab,
+-    base::Value::Type::BOOLEAN },
+-  { key::kBrowserSwitcherDelay,
+-    browser_switcher::prefs::kDelay,
+-    base::Value::Type::INTEGER },
+-#endif
+ #if defined(OS_WIN)
+   { key::kBrowserSwitcherUseIeSitelist,
+     browser_switcher::prefs::kUseIeSitelist,
