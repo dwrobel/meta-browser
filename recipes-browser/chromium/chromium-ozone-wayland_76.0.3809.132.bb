@@ -10,6 +10,7 @@ SRC_URI += " \
         file://0006-do-not-link-atomic.patch \
         file://0010-disable-v8-use-snapshot.patch \
         file://0011-linker-wayland-non-gbm.patch \
+        file://0012-disable-xdg-utility.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
