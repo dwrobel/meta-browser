@@ -33,6 +33,7 @@ SRC_URI += " \
         file://0003-wayland-disable-dri.patch \
         file://0005-ptrace-glibc-2.24.patch \
         file://0006-do-not-link-atomic.patch \
+        file://0012-disable-xdg-utility.patch \
 "
 
 SRC_URI_append_libc-musl = "\

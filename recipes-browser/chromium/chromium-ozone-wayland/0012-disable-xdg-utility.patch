@@ -1,0 +1,60 @@
+Disable using xdg-* tools.
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/browser/shell_integration_linux.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/shell_integration_linux.cc
++++ chromium-76.0.3809.132/chrome/browser/shell_integration_linux.cc
+@@ -103,6 +103,7 @@ const int EXIT_XDG_SETTINGS_SYNTAX_ERROR
+ // If |protocol| is empty this function sets Chrome as the default browser,
+ // otherwise it sets Chrome as the default handler application for |protocol|.
+ bool SetDefaultWebClient(const std::string& protocol) {
++  return true;
+ #if defined(OS_CHROMEOS)
+   return true;
+ #else
+@@ -265,6 +266,9 @@ class LaunchXdgUtilityScopedAllowBaseSyn
+     : public base::ScopedAllowBaseSyncPrimitives {};
+ 
+ bool LaunchXdgUtility(const std::vector<std::string>& argv, int* exit_code) {
++  *exit_code = EXIT_FAILURE;
++  return false;
++  
+   // xdg-settings internally runs xdg-mime, which uses mv to move newly-created
+   // files on top of originals after making changes to them. In the event that
+   // the original files are owned by another user (e.g. root, which can happen
+Index: chromium-76.0.3809.132/chrome/browser/web_applications/components/web_app_shortcut_linux.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/web_applications/components/web_app_shortcut_linux.cc
++++ chromium-76.0.3809.132/chrome/browser/web_applications/components/web_app_shortcut_linux.cc
+@@ -38,6 +38,9 @@ const char kAppListCategories[] = "Netwo
+ 
+ std::string CreateShortcutIcon(const gfx::ImageFamily& icon_images,
+                                const base::FilePath& shortcut_filename) {
++
++  return std::string();
++
+   if (icon_images.empty())
+     return std::string();
+ 
+@@ -137,6 +140,9 @@ bool CreateShortcutInApplicationsMenu(co
+                                       const std::string& contents,
+                                       const base::FilePath& directory_filename,
+                                       const std::string& directory_contents) {
++
++  return true;
++
+   base::ScopedTempDir temp_dir;
+   if (!temp_dir.CreateUniqueTempDir())
+     return false;
+@@ -207,6 +213,8 @@ void DeleteShortcutOnDesktop(const base:
+ void DeleteShortcutInApplicationsMenu(
+     const base::FilePath& shortcut_filename,
+     const base::FilePath& directory_filename) {
++  return;
++
+   std::vector<std::string> argv;
+   argv.push_back("xdg-desktop-menu");
+   argv.push_back("uninstall");
