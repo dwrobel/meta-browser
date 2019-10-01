@@ -1,0 +1,28 @@
+Disable singleton checking
+
+Signed-off-by: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+---
+
+Index: chromium-76.0.3809.132/chrome/browser/chrome_browser_main.cc
+===================================================================
+--- chromium-76.0.3809.132.orig/chrome/browser/chrome_browser_main.cc
++++ chromium-76.0.3809.132/chrome/browser/chrome_browser_main.cc
+@@ -1405,6 +1405,8 @@ int ChromeBrowserMainParts::PreMainMessa
+     return chrome::RESULT_CODE_PACK_EXTENSION_ERROR;
+   }
+ 
++
++#if 0
+   // When another process is running, use that process instead of starting a
+   // new one. NotifyOtherProcess will currently give the other process up to
+   // 20 seconds to respond. Note that this needs to be done before we attempt
+@@ -1413,6 +1415,9 @@ int ChromeBrowserMainParts::PreMainMessa
+   UMA_HISTOGRAM_ENUMERATION("Chrome.ProcessSingleton.NotifyResult",
+                             notify_result_,
+                             ProcessSingleton::kNumNotifyResults);
++#endif
++  notify_result_ = ProcessSingleton::PROCESS_NONE;
++  
+   switch (notify_result_) {
+     case ProcessSingleton::PROCESS_NONE:
+       // No process already running, fall through to starting a new one.
