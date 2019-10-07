@@ -1,0 +1,24 @@
+From 59055bc93bb70f14071a29f16b6d3210c376a9b1 Mon Sep 17 00:00:00 2001
+From: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+Date: Fri, 4 Oct 2019 14:22:33 +0200
+Subject: [PATCH] 0016 Allow running as root, after all
+
+---
+ services/service_manager/zygote/host/zygote_host_impl_linux.cc | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/services/service_manager/zygote/host/zygote_host_impl_linux.cc b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
+index a1f4d8d687..fc31d243de 100644
+--- a/services/service_manager/zygote/host/zygote_host_impl_linux.cc
++++ b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
+@@ -89,7 +89,6 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {
+     LOG(ERROR) << "Running as root without --"
+                << service_manager::switches::kNoSandbox
+                << " is not supported. See https://crbug.com/638180.";
+-    exit(EXIT_FAILURE);
+   }
+ 
+   {
+-- 
+2.20.1
+
