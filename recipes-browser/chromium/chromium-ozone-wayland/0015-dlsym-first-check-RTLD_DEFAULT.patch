@@ -1,0 +1,48 @@
+From f1aea855176b56bbab6c41d03c7dc1c137b8d9da Mon Sep 17 00:00:00 2001
+From: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+Date: Fri, 4 Oct 2019 08:59:25 +0200
+Subject: [PATCH] 0015 dlsym() - first check RTLD_DEFAULT
+
+dlopen, dlsym debugs added
+---
+ base/native_library_posix.cc | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/base/native_library_posix.cc b/base/native_library_posix.cc
+index 7a5c6f5aa8..131aea979a 100644
+--- a/base/native_library_posix.cc
++++ b/base/native_library_posix.cc
+@@ -42,6 +42,8 @@ NativeLibrary LoadNativeLibraryWithOptions(const FilePath& library_path,
+   if (!dl && error)
+     error->message = dlerror();
+ 
++  printf("%p = dlopen(%s, %d) %s\n", dl, library_path.value().c_str(), flags, (!dl && error) ? error->message.c_str() : "");
++
+   return dl;
+ }
+ 
+@@ -55,7 +57,20 @@ void UnloadNativeLibrary(NativeLibrary library) {
+ 
+ void* GetFunctionPointerFromNativeLibrary(NativeLibrary library,
+                                           StringPiece name) {
+-  return dlsym(library, name.data());
++  auto fname = name.data();
++  void *fptr = dlsym(RTLD_DEFAULT, fname);
++
++  if (fptr) {
++    printf("%p = dlsym(RTLD_DEFAULT, %s)\n", fptr, fname);
++    return fptr;
++  }
++
++  fptr = dlsym(library, fname);
++
++  if (fptr)
++    printf("%p = dlsym(%p, %s)\n", fptr, library, fname);
++
++  return fptr;
+ }
+ 
+ std::string GetNativeLibraryName(StringPiece name) {
+-- 
+2.20.1
+

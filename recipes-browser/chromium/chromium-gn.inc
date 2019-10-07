@@ -379,25 +379,16 @@ do_compile() {
 do_compile[progress] = "outof:^\[(\d+)/(\d+)\]\s+"
 
 do_install() {
-	install -d ${D}${bindir}
-	install -d ${D}${libdir}/chromium
 	install -d ${D}${libdir}/chromium/locales
 
 	install -m 4755 chrome_sandbox ${D}${libdir}/chromium/chrome-sandbox
-	install -m 0755 chrome ${D}${libdir}/chromium/chromium-bin
+	install -m 0755 chrome ${D}${libdir}/chromium/chrome
         if ls *.bin 2>/dev/null >/dev/null; then
 	    install -m 0644 *.bin ${D}${libdir}/chromium/
 	fi
 	install -m 0644 icudtl.dat ${D}${libdir}/chromium/icudtl.dat
 
-	# A wrapper for the proprietary Google Chrome version already exists.
-	# We can just use that one instead of reinventing the wheel.
-	WRAPPER_FILE=${S}/chrome/installer/linux/common/wrapper
-	sed -e "s,@@CHANNEL@@,stable,g" \
-		-e "s,@@PROGNAME@@,chromium-bin,g" \
-		${WRAPPER_FILE} > chromium-wrapper
-	install -m 0755 chromium-wrapper ${D}${libdir}/chromium/chromium-wrapper
-	ln -s ${libdir}/chromium/chromium-wrapper ${D}${bindir}/chromium
+	install -m 0755 ${S}/chrome-wrapper.sh ${D}${libdir}/chromium/chrome-wrapper.sh
 
 	# Chromium *.pak files
 	install -m 0644 chrome_*.pak ${D}${libdir}/chromium/
@@ -405,10 +396,6 @@ do_install() {
 
 	# Locales.
 	install -m 0644 locales/*.pak ${D}${libdir}/chromium/locales/
-
-	# Add extra command line arguments to the chromium-wrapper script by
-	# modifying the dummy "CHROME_EXTRA_ARGS" line
-	sed -i "s/^CHROME_EXTRA_ARGS=\"\"/CHROME_EXTRA_ARGS=\"${CHROMIUM_EXTRA_ARGS}\"/" ${D}${libdir}/chromium/chromium-wrapper
 
 	if [ -n "${@bb.utils.contains('PACKAGECONFIG', 'component-build', 'component-build', '', d)}" ]; then
 		install -m 0755 *.so ${D}${libdir}/chromium/
@@ -421,25 +408,15 @@ do_install() {
 		install -m 0755 libminigbm.so ${D}${libdir}/chromium/
 	fi
 
-	# Swiftshader is only built for x86 and x86-64.
-	if [ -d "swiftshader" ]; then
-		install -d ${D}${libdir}/chromium/swiftshader
-		install -m 0644 swiftshader/libEGL.so ${D}${libdir}/chromium/swiftshader/
-		install -m 0644 swiftshader/libGLESv2.so ${D}${libdir}/chromium/swiftshader/
-	fi
-
 	# ChromeDriver.
-	install -m 0755 chromedriver ${D}${bindir}/chromedriver
+	install -m 0755 chromedriver ${D}${libdir}/chromedriver
 }
 
 PACKAGES =+ "${PN}-chromedriver"
 
-FILES_${PN}-chromedriver = "${bindir}/chromedriver"
+FILES_${PN}-chromedriver = "${libdir}/chromedriver"
 
-FILES_${PN} = " \
-        ${bindir}/chromium \
-        ${libdir}/chromium/* \
-"
+FILES_${PN} = "${libdir}/chromium"
 
 PACKAGE_DEBUG_SPLIT_STYLE = "debug-without-src"
 

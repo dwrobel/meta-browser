@@ -12,6 +12,9 @@ SRC_URI += " \
         file://0011-linker-wayland-non-gbm.patch \
         file://0012-disable-xdg-utility.patch \
         file://0013-singleton-disable.patch \
+        file://0015-dlsym-first-check-RTLD_DEFAULT.patch \
+        file://0016-Allow-running-as-root-after-all.patch \
+        file://0020-add-chromium-wrapper.patch \
 "
 
 REQUIRED_DISTRO_FEATURES = "wayland"
@@ -39,6 +42,3 @@ GN_ARGS += "\
         use_system_minigbm=false \
         use_system_libdrm=false \
 "
-
-# The chromium binary must always be started with those arguments.
-CHROMIUM_EXTRA_ARGS_append = " --ozone-platform=wayland"
