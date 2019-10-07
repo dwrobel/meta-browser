@@ -1,0 +1,48 @@
+From 546b83189f8dbef725541f2375b0fbd6f556122b Mon Sep 17 00:00:00 2001
+From: Damian Wrobel <dwrobel@ertelnet.rybnik.pl>
+Date: Thu, 3 Oct 2019 10:06:09 +0200
+Subject: [PATCH] 0020-add-chromium-wrapper
+
+---
+ chrome-wrapper.sh | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+ create mode 100755 chrome-wrapper.sh
+
+diff --git a/chrome-wrapper.sh b/chrome-wrapper.sh
+new file mode 100755
+index 0000000000..3db5b39019
+--- /dev/null
++++ b/chrome-wrapper.sh
+@@ -0,0 +1,29 @@
++#!/bin/sh
++
++[ -f /usr/bin/weston.exports.inc ] && source /usr/bin/weston.exports.inc
++
++export DBUS_SESSION_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
++export WAYLAND_DISPLAY=wayland-0
++export LD_PRELOAD=$WAYLAND_PLATFORM_LD_PRELOADS
++export nexus_ipc_dir=/var/run/nxserver
++
++# To enable wayland debugs
++#export WAYLAND_DEBUG=1
++
++CURR_DIR=$(cd `dirname $0` && pwd)
++
++# Always use our ffmpeg and other shared libs.
++export LD_LIBRARY_PATH="$HERE:$HERE/lib:$HERE/lib.target${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
++
++# Custom version string for this release. This can be used to add a downstream
++# vendor string or release channel information.
++export CHROME_VERSION_EXTRA="dw"
++
++#systemctl disable bupload
++#systemctl stop bupload
++#systemctl stop jsapp lgias nagra7server nginxcfg websocket-ipplayer tr69hostif dial fsmaintainer wpeframework rmfstreamer tunerctrl slauncher wpa_supplicant
++#echo 1 > /proc/sys/vm/overcommit_memory
++#ln -sf /usr/lib/libGLESv2.so /usr/lib/libGLESv2.so.2
++#ln -sf /usr/lib/libEGL.so /usr/lib/libEGL.so.1
++
++exec $ENTRYPOINT "$CURR_DIR/chrome" --use-gl=egl --ozone-platform=wayland --no-sandbox "$@"
+-- 
+2.20.1
+

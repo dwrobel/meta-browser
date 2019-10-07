@@ -23,5 +23,3 @@ GN_ARGS += "\
         use_gtk=false \
 "
 
-# The chromium binary must always be started with those arguments.
-CHROMIUM_EXTRA_ARGS_append = " --ozone-platform=wayland"
