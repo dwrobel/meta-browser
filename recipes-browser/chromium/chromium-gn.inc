@@ -38,6 +38,7 @@ SRC_URI += " \
         file://0015-dlsym-first-check-RTLD_DEFAULT.patch \
         file://0016-Allow-running-as-root-after-all.patch \
         file://0020-add-chromium-wrapper.patch \
+        file://0021-remove-atk.patch \
 "
 
 SRC_URI_append_libc-musl = "\
@@ -67,7 +68,6 @@ SRC_URI_append_libc-musl = "\
 DEPENDS += " \
     alsa-lib \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'at-spi2-core', '', d)} \
-    atk \
     bison-native \
     cairo \
     dbus \
