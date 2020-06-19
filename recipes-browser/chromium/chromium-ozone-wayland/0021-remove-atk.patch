@@ -1,0 +1,14 @@
+Index: chromium-83.0.4103.61/build/config/ui.gni
+===================================================================
+--- chromium-83.0.4103.61.orig/build/config/ui.gni
++++ chromium-83.0.4103.61/build/config/ui.gni
+@@ -48,7 +48,8 @@ use_x11 = is_linux && !use_ozone
+ assert(!use_glib || (is_linux && !is_chromeos && !is_chromecast))
+ 
+ # Whether to use atk, the Accessibility ToolKit library
+-use_atk = is_desktop_linux && !is_chromecast && use_glib
++#use_atk = is_desktop_linux && !is_chromecast && use_glib
++use_atk = false
+ # =============================================
+ #   PLEASE DO NOT ADD MORE FLAGS TO THIS FILE
+ # =============================================
