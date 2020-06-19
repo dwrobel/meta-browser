@@ -73,7 +73,6 @@ DEPENDS += " \
     dbus \
     expat \
     flac \
-    freetype \
     glib-2.0 \
     gn-native \
     gperf-native \
@@ -143,7 +142,7 @@ GN_ARGS = " \
         use_jumbo_build=${@bb.utils.contains('PACKAGECONFIG', 'jumbo-build', 'true', 'false', d)} \
         use_kerberos=false \
         use_pulseaudio=${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio', 'true', 'false', d)} \
-        use_system_freetype=true \
+        use_system_freetype=false \
         use_system_libjpeg=true \
 "
 
