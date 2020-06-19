@@ -39,6 +39,7 @@ SRC_URI += " \
         file://0016-Allow-running-as-root-after-all.patch \
         file://0020-add-chromium-wrapper.patch \
         file://0021-remove-atk.patch \
+        file://0022-use-system-wayland-scanner.patch \
 "
 
 SRC_URI_append_libc-musl = "\
