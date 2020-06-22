@@ -33,6 +33,7 @@ SRC_URI += " \
         file://0003-wayland-disable-dri.patch \
         file://0005-ptrace-glibc-2.24.patch \
         file://0006-do-not-link-atomic.patch \
+        file://0010-disable-v8-context-snapshots.patch \
         file://0012-disable-xdg-utility.patch \
         file://0013-singleton-disable.patch \
         file://0015-dlsym-first-check-RTLD_DEFAULT.patch \
