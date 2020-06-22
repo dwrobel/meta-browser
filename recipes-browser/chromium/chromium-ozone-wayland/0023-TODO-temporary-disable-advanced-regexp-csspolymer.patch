@@ -1,0 +1,24 @@
+Index: chromium-83.0.4103.61/third_party/node/node_modules/polymer-css-build/lib/polymer-2-dir-transform.js
+===================================================================
+--- chromium-83.0.4103.61.orig/third_party/node/node_modules/polymer-css-build/lib/polymer-2-dir-transform.js
++++ chromium-83.0.4103.61/third_party/node/node_modules/polymer-css-build/lib/polymer-2-dir-transform.js
+@@ -12,8 +12,8 @@ subject to an additional IP rights grant
+ const HOST_DIR = /:host\(:dir\((ltr|rtl)\)\)/g;
+ const HOST_DIR_REPLACMENT = '$&, :host([dir="$1"])';
+ 
+-const EL_DIR = /(?<!:host\()([\s\w-#.[\]*]*):dir\((ltr|rtl)\)/g;
+-const EL_DIR_REPLACMENT = '$&, :host([dir="$2"]) $1';
++//const EL_DIR = /(?<!:host\()([\s\w-#.[\]*]*):dir\((ltr|rtl)\)/g;
++//const EL_DIR_REPLACMENT = '$&, :host([dir="$2"]) $1';
+ 
+ const DIR_CHECK = /:dir\((?:ltr|rtl)\)/;
+ 
+@@ -22,7 +22,7 @@ function polymer2DirShadowTransform(sele
+     return selector;
+   }
+   selector = selector.replace(HOST_DIR, HOST_DIR_REPLACMENT);
+-  return selector.replace(EL_DIR, EL_DIR_REPLACMENT);
++  return selector; //.replace(EL_DIR, EL_DIR_REPLACMENT);
+ }
+ 
+ module.exports = {
