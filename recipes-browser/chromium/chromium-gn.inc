@@ -77,7 +77,7 @@ DEPENDS += " \
     expat \
     flac \
     glib-2.0 \
-    gn-native \
+    chromium-gn-native \
     gperf-native \
     gtk+3 \
     jpeg \
@@ -380,7 +380,7 @@ addtask add_nodejs_symlink after do_configure before do_compile
 do_configure() {
 	cd ${S}
 	./build/linux/unbundle/replace_gn_files.py --system-libraries ${GN_UNBUNDLE_LIBS}
-	gn gen --args='${GN_ARGS}' "${OUTPUT_DIR}"
+	chromium-gn gen --args='${GN_ARGS}' "${OUTPUT_DIR}"
 }
 
 do_compile() {
