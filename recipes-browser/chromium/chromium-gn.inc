@@ -42,6 +42,7 @@ SRC_URI += " \
         file://0021-remove-atk.patch \
         file://0022-use-system-wayland-scanner.patch \
         file://0023-TODO-temporary-disable-advanced-regexp-csspolymer.patch \
+        file://0098-disable-swiftshader.patch \
 "
 
 SRC_URI_append_libc-musl = "\
