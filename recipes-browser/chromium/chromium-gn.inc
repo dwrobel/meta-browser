@@ -43,6 +43,7 @@ SRC_URI += " \
         file://0022-use-system-wayland-scanner.patch \
         file://0023-TODO-temporary-disable-advanced-regexp-csspolymer.patch \
         file://0098-disable-swiftshader.patch \
+        file://0099-restore-xdg-shell-v5.patch \
 "
 
 SRC_URI_append_libc-musl = "\
