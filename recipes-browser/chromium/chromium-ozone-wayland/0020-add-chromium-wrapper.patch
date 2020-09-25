@@ -12,7 +12,7 @@ Index: chromium-83.0.4103.61/chrome-wrapper.sh
 ===================================================================
 --- /dev/null
 +++ chromium-83.0.4103.61/chrome-wrapper.sh
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,32 @@
 +#!/bin/sh
 +
 +if [ -f /usr/bin/weston.exports.inc ]; then
@@ -39,4 +39,9 @@ Index: chromium-83.0.4103.61/chrome-wrapper.sh
 +# systemctl stop jsapp lgias nagra7server nginxcfg websocket-ipplayer tr69hostif dial fsmaintainer wpeframework rmfstreamer tunerctrl slauncher wpa_supplicant
 +# echo 1 > /proc/sys/vm/overcommit_memory
 +
-+exec $ENTRYPOINT "$CURR_DIR/chrome" --use-gl=egl --ozone-platform=wayland --no-sandbox "$@"
++# TODO: this shm setup should be done on platform not here
++# Remount with bigger Shared Memory
++# mount -o remount,size=192M /dev/shm
++
++# TODO: --in-process-gpu --disable-gpu-sandbox options are required to workaround problem with OzonePlatformWayland class that is not a singleton 
++exec $ENTRYPOINT "$CURR_DIR/chrome" --kiosk --disable-features=TranslateUI --use-gl=egl --ozone-platform=wayland --in-process-gpu --disable-gpu-sandbox --no-sandbox -test-type "$@"
